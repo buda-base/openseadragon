@@ -58,8 +58,8 @@ $.IIIFTileSource = function( options ){
     this.usedFormat = "jpg";
     if ( this.formatHints ) {
         for (var f = 0; f < this.formatHints.length; f++ ) {
-            if ( $.imageFormatSupported(f) ) {
-                this.usedFormat = f;
+            if ( $.imageFormatSupported(this.formatHints[f]) ) {
+                this.usedFormat = this.formatHints[f];
                 break;
             }
         }
