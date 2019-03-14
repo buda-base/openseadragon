@@ -376,7 +376,7 @@ $.extend( $.IIIFTileSource.prototype, $.TileSource.prototype, /** @lends OpenSea
             iiifTileY = y * iiifTileSizeHeight;
             iiifTileW = Math.min( iiifTileSizeWidth, this.width - iiifTileX );
             iiifTileH = Math.min( iiifTileSizeHeight, this.height - iiifTileY );
-            if ( x == 0 && yy == 0 && iiifTileW == this.width && iiifTileH == this.height ) {
+            if ( x == 0 && y == 0 && iiifTileW == this.width && iiifTileH == this.height ) {
                 iiifRegion = "full";
             } else {
                 iiifRegion = [ iiifTileX, iiifTileY, iiifTileW, iiifTileH ].join( ',' );
