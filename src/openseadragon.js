@@ -2485,7 +2485,7 @@ function OpenSeadragon( options ){
         imageFormatSupported: function( extension ) {
             extension = extension ? extension : "";
             // eslint-disable-next-line no-use-before-define
-            return !!FILEFORMATS[ extension.toLowerCase() ];
+            return !!FILEFORMATS[ extension.toString().toLowerCase() ];
         }
 
     });
