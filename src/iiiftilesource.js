@@ -347,35 +347,46 @@ $.extend( $.IIIFTileSource.prototype, $.TileSource.prototype, /** @lends OpenSea
             iiifTileW,
             iiifTileH,
             iiifSize,
+            iiifSizeW,
             iiifQuality,
-            uri;
+            uri,
+            isv1;
 
         tileWidth = this.getTileWidth(level);
         tileHeight = this.getTileHeight(level);
         iiifTileSizeWidth = Math.ceil( tileWidth / scale );
         iiifTileSizeHeight = Math.ceil( tileHeight / scale );
-
-        if ( this['@context'].indexOf('/1.0/context.json') > -1 ||
+        isv1 = ( this['@context'].indexOf('/1.0/context.json') > -1 ||
              this['@context'].indexOf('/1.1/context.json') > -1 ||
-             this['@context'].indexOf('/1/context.json') > -1 ) {
+             this['@context'].indexOf('/1/context.json') > -1 );
+        if (isv1) {
             iiifQuality = "native." + this.usedFormat;
         } else {
             iiifQuality = "default." + this.usedFormat;
         }
         if ( levelWidth < tileWidth && levelHeight < tileHeight ){
-            // max will be canonical in 3.0
-            iiifSize = "max";
-            iiifRegion = 'full';
-        } else if ( x == 0 && y == 0 && levelWidth == this.width && levelHeight == this.height ) {
-            iiifSize = "max";
+            if (isv1) {
+                iiifSize = levelWidth + ",";
+            } else {
+                iiifSize = "max";
+            }
             iiifRegion = 'full';
         } else {
             iiifTileX = x * iiifTileSizeWidth;
             iiifTileY = y * iiifTileSizeHeight;
             iiifTileW = Math.min( iiifTileSizeWidth, this.width - iiifTileX );
             iiifTileH = Math.min( iiifTileSizeHeight, this.height - iiifTileY );
-            iiifSize = Math.ceil( iiifTileW * scale ) + ",";
-            iiifRegion = [ iiifTileX, iiifTileY, iiifTileW, iiifTileH ].join( ',' );
+            if ( x == 0 && yy == 0 && iiifTileW == this.width && iiifTileH == this.height ) {
+                iiifRegion = "full";
+            } else {
+                iiifRegion = [ iiifTileX, iiifTileY, iiifTileW, iiifTileH ].join( ',' );
+            }
+            iiifSizeW = Math.ceil( iiifTileW * scale );
+            if ( (!isv1) && iiifSizeW == this.width ) {
+                iiifSize = "max";
+            } else {
+                iiifSize = iiifSizeW + ",";
+            }
         }
         uri = [ this['@id'], iiifRegion, iiifSize, IIIF_ROTATION, iiifQuality ].join( '/' );
 
@@ -387,7 +398,7 @@ $.extend( $.IIIFTileSource.prototype, $.TileSource.prototype, /** @lends OpenSea
     /**
      * Determine whether arbitrary tile requests can be made against a service with the given profile
      * @function
-     * @param {object} profile - IIIF profile array
+     * @param {array} profile - IIIF profile array
      * @throws {Error}
      */
     function canBeTiled ( profile ) {
