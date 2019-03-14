@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     // ----------
     grunt.loadNpmTasks("grunt-contrib-compress");
     grunt.loadNpmTasks("grunt-contrib-concat");
-    //grunt.loadNpmTasks("grunt-contrib-uglify");
+    grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-qunit");
     grunt.loadNpmTasks("grunt-contrib-connect");
     grunt.loadNpmTasks("grunt-contrib-watch");
@@ -117,7 +117,6 @@ module.exports = function(grunt) {
                 ]
             }
         },
-        /*
         uglify: {
             options: {
                 preserveComments: false,
@@ -135,7 +134,6 @@ module.exports = function(grunt) {
                 dest: minified
             }
         },
-        */
         compress: {
             zip: {
                 options: {
@@ -307,7 +305,7 @@ module.exports = function(grunt) {
     // Build task.
     // Cleans out the build folder and builds the code and images into it, checking lint.
     grunt.registerTask("build", [
-        "clean:build", "git-describe", "eslint", "concat", //"uglify",
+        "clean:build", "git-describe", "eslint", "concat", "uglify",
         "replace:cleanPaths", "copy:build"
     ]);
 
